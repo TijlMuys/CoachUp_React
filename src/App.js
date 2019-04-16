@@ -1,20 +1,57 @@
+// App.js
+
 import React, { Component } from 'react';
 import AppNavBar from "./Components/AppNavBar";
-import AppJumboTron from "./Components/AppJumboTron";
 import AppLoginForm from "./Components/AppLoginForm";
-
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <AppNavBar/>
-          <AppLoginForm/>
-          <AppJumboTron/>
-        </header>
-      </div>
-    );
-  }
+
+    state = {
+        loggedIn: false
+    };
+
+    componentDidMount() {
+        this.isLoggedIn();
+    }
+
+    isLoggedIn = () => {
+        const authToken = window.localStorage.getItem("authToken");
+        if(authToken !== null && authToken !== "")
+        {
+            this.setState({loggedIn: true})
+        }
+        else
+        {
+            this.setState({loggedIn: false})
+        }
+    }
+
+
+    loginChangeHandler = () => {
+        this.isLoggedIn()
+    };
+
+
+    showBody = () => {
+        if(this.state.loggedIn) {
+            return (
+                <AppNavBar logoutHandler={this.loginChangeHandler}/>
+            );
+        }
+        else {
+            return (
+                <AppLoginForm loginHandler={this.loginChangeHandler}/>
+            );
+        }
+    }
+
+    render() {
+        return (
+            <div className="CoachUpApp">
+                {this.showBody()}
+            </div>
+        );
+    }
 }
 
 export default App;
+

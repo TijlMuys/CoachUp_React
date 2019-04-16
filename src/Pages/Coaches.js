@@ -1,18 +1,14 @@
 import React, {Component} from 'react';
-import {Container} from 'react-bootstrap'
-import {Row} from 'react-bootstrap';
-import {Col} from 'react-bootstrap';
-import {Jumbotron} from 'react-bootstrap';
-import {Button} from 'react-bootstrap';
+import {Button, Col, Container, Jumbotron, Row} from "react-bootstrap";
 
-class AppJumboTron extends Component {
+class Coaches extends Component {
     render() {
         return (
             <Container style={{paddingTop: '5rem'}}>
                 <Row>
                     <Col>
                         <Jumbotron>
-                            <h1>Home</h1>
+                            <h1>Coaches</h1>
                             <p>
                                 This is a simple hero unit, a simple jumbotron-style component for calling
                                 extra attention to featured content or information.
@@ -28,4 +24,4 @@ class AppJumboTron extends Component {
     }
 }
 
-export default AppJumboTron;
+export default Coaches;

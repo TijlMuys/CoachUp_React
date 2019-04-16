@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
-import {Container} from 'react-bootstrap'
-import {Row} from 'react-bootstrap';
-import {Col} from 'react-bootstrap';
-import {Jumbotron} from 'react-bootstrap';
-import {Button} from 'react-bootstrap';
+import {Button, Col, Container, Jumbotron, Row} from "react-bootstrap";
 
-class AppJumboTron extends Component {
+class Home extends Component {
     render() {
         return (
             <Container style={{paddingTop: '5rem'}}>
@@ -28,4 +24,4 @@ class AppJumboTron extends Component {
     }
 }
 
-export default AppJumboTron;
+export default Home;
