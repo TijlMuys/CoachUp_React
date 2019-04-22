@@ -6,7 +6,8 @@ import AppLoginForm from "./Components/AppLoginForm";
 class App extends Component {
 
     state = {
-        loggedIn: false
+        loggedIn: false,
+        myAccount: null
     };
 
     componentDidMount() {
@@ -18,6 +19,32 @@ class App extends Component {
         if(authToken !== null && authToken !== "")
         {
             this.setState({loggedIn: true})
+            fetch("http://localhost:8080/loggedinaccount", {
+                method: "GET",
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'authToken': window.localStorage.getItem("authToken")
+                }
+            })
+                .then(resp => {
+                    if (resp.ok)
+                    {
+                        return resp.json();
+                    }
+                    if (resp.status === 404 || resp.status === 401 || resp.status === 403 || resp.status === 400) {
+                        console.log("error: ", resp.status, resp);
+                    }
+                })
+                .then( json => {
+                    if(json !== undefined) {
+                        this.setState({myAccount: json});
+                    }
+                })
+                .catch( error => {
+                    console.log("Error: ", error);
+                });
         }
         else
         {
@@ -34,7 +61,7 @@ class App extends Component {
     showBody = () => {
         if(this.state.loggedIn) {
             return (
-                <AppNavBar logoutHandler={this.loginChangeHandler}/>
+                <AppNavBar myAccount={this.state.myAccount} logoutHandler={this.loginChangeHandler}/>
             );
         }
         else {

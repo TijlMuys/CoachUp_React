@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {Navbar} from 'react-bootstrap'
-import {Nav} from 'react-bootstrap'
+import {Navbar, Nav} from 'react-bootstrap'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Home from "../Pages/Home";
 import Profile from "../Pages/Profile";
@@ -11,11 +10,31 @@ import Buddies from "../Pages/Buddies";
 class AppNavBar extends Component {
 
     Logout = () => {
+        //Tell the backend that the user wants to log out
+        fetch("http://localhost:8080/logout", {
+            method: "POST",
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json',
+                'authToken': window.localStorage.getItem("authToken")
+            }
+        })
+            .then(resp => {
+                if(!resp.ok) {
+                    console.log("Something went wrong: ", resp.status, resp);
+                }
+            })
+            .catch( error => {
+                console.log("Error: ", error);
+            });
         window.localStorage.removeItem("authToken");
         this.props.logoutHandler();
+
     }
 
     render() {
+        let displayName = 'user';
+        if(this.props.myAccount){displayName = this.props.myAccount['userName'];}
         return (
             <Router>
                 <Navbar bg="primary" variant="dark" expand="md" fixed="top">
@@ -36,8 +55,10 @@ class AppNavBar extends Component {
                             </NavDropdown>*/}
                         </Nav>
                         <Nav>
-                            <Nav.Link onClick={this.Logout}>
-                                <b>Log Out</b>
+                            <Nav.Link className="justify-content-end"  onClick={this.Logout}>
+                                <Navbar.Text>
+                                    Log out: &nbsp;<b>{displayName}</b>
+                                </Navbar.Text>
                             </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
