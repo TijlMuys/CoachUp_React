@@ -28,13 +28,13 @@ class AppNavBar extends Component {
                 console.log("Error: ", error);
             });
         window.localStorage.removeItem("authToken");
+        window.localStorage.removeItem("myAccount");
         this.props.logoutHandler();
 
     }
 
     render() {
-        let displayName = 'user';
-        if(this.props.myAccount){displayName = this.props.myAccount['userName'];}
+
         return (
             <Router>
                 <Navbar bg="primary" variant="dark" expand="md" fixed="top">
@@ -57,7 +57,7 @@ class AppNavBar extends Component {
                         <Nav>
                             <Nav.Link className="justify-content-end"  onClick={this.Logout}>
                                 <Navbar.Text>
-                                    Log out: &nbsp;<b>{displayName}</b>
+                                    Log out: &nbsp;<b>{this.props.displayName}</b>
                                 </Navbar.Text>
                             </Nav.Link>
                         </Nav>

@@ -46,6 +46,22 @@ class AppLoginForm extends Component {
             .then( json => {
                 if(json !== undefined) {
                     window.localStorage.setItem("authToken", json.authToken);
+                    window.localStorage.setItem("myAccount", JSON.stringify(
+                    " {\n" +
+                    "        \"id\": \"\",\n" +
+                    "        \"email\": \"\",\n" +
+                    "        \"userName\": \"user\",\n" +
+                    "        \"accountType\": \"regular\",\n" +
+                    "        \"street\": \"\",\n" +
+                    "        \"number\": \"\",\n" +
+                    "        \"zipCode\": \"\",\n" +
+                    "        \"city\": \"\",\n" +
+                    "        \"coordinates\": null,\n" +
+                    "        \"agreedConditions\": true,\n" +
+                    "        \"phone\": \"\"\n" +
+                    "    }"
+                    ));
+                    window.location.reload();
                     this.props.loginHandler();
                 }
             })

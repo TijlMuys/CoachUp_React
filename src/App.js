@@ -40,6 +40,7 @@ class App extends Component {
                 .then( json => {
                     if(json !== undefined) {
                         this.setState({myAccount: json});
+                        window.localStorage.setItem("myAccount", JSON.stringify(json));
                     }
                 })
                 .catch( error => {
@@ -60,8 +61,9 @@ class App extends Component {
 
     showBody = () => {
         if(this.state.loggedIn) {
+            let displayName = JSON.parse(localStorage.getItem('myAccount'))['userName'];
             return (
-                <AppNavBar myAccount={this.state.myAccount} logoutHandler={this.loginChangeHandler}/>
+                <AppNavBar logoutHandler={this.loginChangeHandler} displayName={displayName}/>
             );
         }
         else {
