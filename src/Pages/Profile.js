@@ -5,8 +5,8 @@ import {Button, Col, Container, Jumbotron, Row, Card, Form} from "react-bootstra
 class Profile extends Component {
 
     state = {
-        myCoach: null
-
+        myCoach: null,
+        mySporter: null
     };
 
     loadCoachProfileData = (accountId) => {
@@ -72,7 +72,7 @@ class Profile extends Component {
 
     renderCoachProfilePage = () => {
         return (
-                <Container style={{'paddingTop': '5rem'}}>
+                <Container style={{'paddingTop': '15vh'}}>
                     <Row>
                         <Col>
                             <Card style={{'padding': '3rem 1rem 1rem 1rem'}}>
@@ -102,28 +102,19 @@ class Profile extends Component {
                                                 <Form.Label><span className="h6">Username:</span> &nbsp; {(this.state.myCoach)? this.state.myCoach['account']['userName'] : 'userName'}</Form.Label>
                                             </Col>
                                         </Form.Row>
-                                        <hr />
                                         <Form.Row>
                                             <Col>
                                                     <Form.Label><span className="h6">Email:</span> &nbsp; {(this.state.myCoach)? this.state.myCoach['account']['email'] : 'email'}</Form.Label>
                                             </Col>
                                         </Form.Row>
-                                        <hr />
                                         <Form.Row>
                                             <Col>
                                                 <Form.Label><span className="h6">Telephone:</span> &nbsp; {(this.state.myCoach)? ((this.state.myCoach['account']['phone'] !== null)? this.state.myCoach['account']['phone'] : 'no phone'): 'no phone'}</Form.Label>
                                             </Col>
                                         </Form.Row>
-                                        <hr />
-                                        <h6>Address:</h6>
                                         <Form.Row>
                                             <Col>
-                                                <Form.Label>{(this.state.myCoach)? this.state.myCoach['account']['street'] : 'street'}&nbsp;&nbsp;&nbsp;{(this.state.myCoach)? this.state.myCoach['account']['number'] : 'number'}</Form.Label>
-                                            </Col>
-                                        </Form.Row>
-                                        <Form.Row>
-                                            <Col>
-                                                <Form.Label>{(this.state.myCoach)? this.state.myCoach['account']['zipCode'] : 'zipcode'}&nbsp;&nbsp;&nbsp;{(this.state.myCoach)? this.state.myCoach['account']['city'] : 'city'}</Form.Label>
+                                                <Form.Label><span className="h6">Address:</span> &nbsp;{(this.state.myCoach)? this.state.myCoach['account']['street'] : 'street'}&nbsp;{(this.state.myCoach)? this.state.myCoach['account']['number'] : 'number'},&nbsp;{(this.state.myCoach)? this.state.myCoach['account']['zipCode'] : 'zipcode'}&nbsp;{(this.state.myCoach)? this.state.myCoach['account']['city'] : 'city'}</Form.Label>
                                             </Col>
                                         </Form.Row>
                                         <hr />
@@ -175,28 +166,19 @@ class Profile extends Component {
                                             <Form.Label><span className="h6">Username:</span> &nbsp; {(this.state.mySporter)? this.state.mySporter['account']['userName'] : 'userName'}</Form.Label>
                                         </Col>
                                     </Form.Row>
-                                    <hr />
                                     <Form.Row>
                                         <Col>
                                             <Form.Label><span className="h6">Email:</span> &nbsp; {(this.state.mySporter)? this.state.mySporter['account']['email'] : 'email'}</Form.Label>
                                         </Col>
                                     </Form.Row>
-                                    <hr />
                                     <Form.Row>
                                         <Col>
-                                            <Form.Label><span className="h6">Telephone:</span> &nbsp; {(this.state.mySporter)? ((this.state.mySporter['account']['phone'] !== null)? this.state.myCoach['account']['phone'] : 'no phone number'): 'no phone number'}</Form.Label>
-                                        </Col>
-                                    </Form.Row>
-                                    <hr />
-                                    <h6>Address:</h6>
-                                    <Form.Row>
-                                        <Col>
-                                            <Form.Label>{(this.state.mySporter)? this.state.mySporter['account']['street'] : 'street'}&nbsp;&nbsp;&nbsp;{(this.state.mySporter)? this.state.mySporter['account']['number'] : 'number'}</Form.Label>
+                                            <Form.Label><span className="h6">Telephone:</span> &nbsp; {(this.state.mySporter)? ((this.state.mySporter['account']['phone'] !== null)? this.state.mySporter['account']['phone'] : 'no phone number'): 'no phone number'}</Form.Label>
                                         </Col>
                                     </Form.Row>
                                     <Form.Row>
                                         <Col>
-                                            <Form.Label>{(this.state.mySporter)? this.state.mySporter['account']['zipCode'] : 'zipcode'}&nbsp;&nbsp;&nbsp;{(this.state.mySporter)? this.state.mySporter['account']['city'] : 'city'}</Form.Label>
+                                            <Form.Label><span className="h6">Address:</span> &nbsp;{(this.state.mySporter)? this.state.mySporter['account']['street'] : 'street'}&nbsp;{(this.state.mySporter)? this.state.mySporter['account']['number'] : 'number'},&nbsp;{(this.state.mySporter)? this.state.mySporter['account']['zipCode'] : 'zipcode'}&nbsp;{(this.state.mySporter)? this.state.mySporter['account']['city'] : 'city'}</Form.Label>
                                         </Col>
                                     </Form.Row>
                                     <hr />

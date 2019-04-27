@@ -62,8 +62,9 @@ class App extends Component {
     showBody = () => {
         if(this.state.loggedIn) {
             let displayName = JSON.parse(localStorage.getItem('myAccount'))['userName'];
+            let accountType = JSON.parse(localStorage.getItem('myAccount'))['accountType'];
             return (
-                <AppNavBar logoutHandler={this.loginChangeHandler} displayName={displayName}/>
+                <AppNavBar logoutHandler={this.loginChangeHandler} displayName={displayName} accountType={accountType}/>
             );
         }
         else {

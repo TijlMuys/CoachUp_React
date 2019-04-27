@@ -4,7 +4,7 @@ import {Button, Col, Container, Jumbotron, Row} from "react-bootstrap";
 class Coaches extends Component {
     render() {
         return (
-            <Container style={{paddingTop: '5rem'}}>
+            <Container style={{paddingTop: '15vh'}}>
                 <Row>
                     <Col>
                         <Jumbotron>

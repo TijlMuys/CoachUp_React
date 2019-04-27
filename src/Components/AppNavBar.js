@@ -6,6 +6,8 @@ import Profile from "../Pages/Profile";
 import Schedule from "../Pages/Schedule";
 import Coaches from "../Pages/Coaches";
 import Buddies from "../Pages/Buddies";
+import Lessons from "../Pages/Lessons";
+import BuddyRequest from "../Pages/BuddyRequest";
 
 class AppNavBar extends Component {
 
@@ -29,6 +31,7 @@ class AppNavBar extends Component {
             });
         window.localStorage.removeItem("authToken");
         window.localStorage.removeItem("myAccount");
+        window.location.href = "/"
         this.props.logoutHandler();
 
     }
@@ -44,8 +47,11 @@ class AppNavBar extends Component {
                         <Nav className="mr-auto">
                             <Link to={'/profile'} className="nav-link">Profile</Link>
                             <Link to={'/schedule'} className="nav-link">Schedule</Link>
-                            <Link to={'/coaches'} className="nav-link">Coaches</Link>
-                            <Link to={'/buddies'} className="nav-link">Buddies</Link>
+                            {console.log(this.props)}
+                            {(this.props.accountType === 'coach')?  <Link to={'/lessons'} className="nav-link">Lessons</Link> : null}
+                            <Link to={'/coaches'} className="nav-link">Find Coaches</Link>
+                            <Link to={'/buddies'} className="nav-link">Find Buddies</Link>
+                            {(this.props.accountType === 'regular')?  <Link to={'/buddyrequest'} className="nav-link">Request Buddy</Link> : null}
                             {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -67,6 +73,8 @@ class AppNavBar extends Component {
                     <Route exact path='/' component={Home} />
                     <Route path='/profile' component={Profile} />
                     <Route path='/schedule' component={Schedule} />
+                    <Route path='/lessons' component={Lessons} />
+                    <Route path='/buddyrequest' component={BuddyRequest} />
                     <Route path='/coaches' component={Coaches} />
                     <Route path='/buddies' component={Buddies} />
                 </Switch>
