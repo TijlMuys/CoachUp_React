@@ -49,7 +49,7 @@ class AppNavBar extends Component {
                             <Link to={'/schedule'} className="nav-link">Schedule</Link>
                             {console.log(this.props)}
                             {(this.props.accountType === 'coach')?  <Link to={'/lessons'} className="nav-link">Lessons</Link> : null}
-                            <Link to={'/coaches'} className="nav-link">Find Coaches</Link>
+                            <Link to={'/coaches'} className="nav-link">Find Coaching</Link>
                             <Link to={'/buddies'} className="nav-link">Find Buddies</Link>
                             {(this.props.accountType === 'regular')?  <Link to={'/buddyrequest'} className="nav-link">Request Buddy</Link> : null}
                             {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">

@@ -1,26 +1,186 @@
 import React, {Component} from 'react';
-import {Button, Col, Container, Jumbotron, Row} from "react-bootstrap";
+import {Col, Container, Jumbotron, Row, Navbar, Form, FormControl, Button} from "react-bootstrap";
+import Spinner from "react-bootstrap/es/Spinner";
+import CoachEntry from "../PageComponent/CoachEntry";
 
 class Coaches extends Component {
+
+    state = {
+        allLessons: null,
+        sport: null,
+        allSports: null
+    };
+
+
+    componentWillMount() {
+
+        if(this.state.allLessons === null)
+        {
+            this.loadAllLessonData();
+        }
+        if(this.state.allSports === null)
+        {
+            this.loadAllSports();
+        }
+
+    }
+
+
+    loadAllLessonData = () => {
+        fetch("http://localhost:8080/Lessons", {
+            method: "GET",
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'authToken': window.localStorage.getItem("authToken")
+            }
+        })
+            .then(resp => {
+                if (resp.ok)
+                {
+                    return resp.json();
+                }
+                if (resp.status === 404 || resp.status === 401 || resp.status === 403 || resp.status === 400) {
+                    console.log("error: ", resp.status, resp);
+                }
+            })
+            .then( json => {
+                if(json !== undefined) {
+                    this.setState({allLessons: json});
+                    console.log(this.state);
+                    this.forceUpdate();
+                }
+            })
+            .catch( error => {
+                console.log("Error: ", error);
+            });
+    }
+
+    loadAllSports = () => {
+        fetch("http://localhost:8080/Sports", {
+            method: "GET",
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'authToken': window.localStorage.getItem("authToken")
+            }
+        })
+            .then(resp => {
+                if (resp.ok)
+                {
+                    return resp.json();
+                }
+                if (resp.status === 404 || resp.status === 401 || resp.status === 403 || resp.status === 400) {
+                    console.log("error: ", resp.status, resp);
+                }
+            })
+            .then( json => {
+                if(json !== undefined) {
+                    console.log(json);
+                    let newState = {...this.state};
+                    newState['allSports'] = json;
+                    this.setState(newState);
+                    console.log(this.state);
+                    //set first sport for form
+                    this.setState({
+                        sport: this.state.allSports[0]['sportName']
+                    })
+                    this.forceUpdate();
+                }
+            })
+            .catch( error => {
+                console.log("Error: ", error);
+            });
+    }
+
+    loadSportFilterLessonData = () => {
+        fetch("http://localhost:8080/Lessons", {
+            method: "GET",
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'authToken': window.localStorage.getItem("authToken")
+            }
+        })
+            .then(resp => {
+                if (resp.ok)
+                {
+                    return resp.json();
+                }
+                if (resp.status === 404 || resp.status === 401 || resp.status === 403 || resp.status === 400) {
+                    console.log("error: ", resp.status, resp);
+                }
+            })
+            .then( json => {
+                if(json !== undefined) {
+                    this.setState({allLessons: json});
+                    console.log(this.state);
+                    this.forceUpdate();
+                }
+            })
+            .catch( error => {
+                console.log("Error: ", error);
+            });
+    }
+
     render() {
-        return (
-            <Container style={{paddingTop: '15vh'}}>
-                <Row>
-                    <Col>
-                        <Jumbotron>
-                            <h1>Coaches</h1>
-                            <p>
-                                This is a simple hero unit, a simple jumbotron-style component for calling
-                                extra attention to featured content or information.
-                            </p>
-                            <p>
-                                <Button variant="primary">Learn more</Button>
-                            </p>
-                        </Jumbotron>
-                    </Col>
-                </Row>
-            </Container>
-        );
+        if(this.state.allLessons !== null && this.state.allSports !== null)
+        {
+            return (
+                <Container style={{paddingTop: '15vh'}}>
+                    <Row>
+                        <Col>
+                            <Jumbotron style={{paddingTop: '1rem'}}>
+                                <Navbar style={{backgroundColor: 'inherit', borderStyle:'none', width: 'inherit', padding: '0', margin:'0 auto'}} className="float-right" >
+                                    <Form inline style={{width:'inherit'}}>
+                                        <Form.Control as="select" name='sport' required value={this.state.sport}
+                                                      onChange={e => this.handleChange(e)} style={{maxWidth: '70%'}}>
+                                            {this.state.allSports.map((currentSport, index) => {
+                                                return (<option key={index} value={currentSport['sportName']}
+                                                                name='sport' >{currentSport['sportName']}</option>);
+                                            })}
+                                        </Form.Control>&nbsp;&nbsp;
+                                        <Button variant = "outline-primary" type="submit" style={{Width: '10%'}}>Filter</Button>
+                                    </Form>
+                                </Navbar>
+                                <br/><br/>
+                                <h1>Find Coaching</h1>
+                                <hr/>
+                                <ul className="list-unstyled">
+                                    {this.state.allLessons.map((lesson, index) => {
+                                        console.log(lesson);
+                                        console.log(this.state);
+                                        return (
+                                            <div key={index} style={{margin: '0', padding: '0'}}>
+                                            <CoachEntry style={{padding: '0rem 0rem'}} myLesson={lesson} />
+                                            <hr />
+                                            </div>
+                                        );
+                                    })}
+                                </ul>
+                            </Jumbotron>
+                        </Col>
+                    </Row>
+                </Container>
+            );
+        }
+        else
+        {
+            return (
+                <Container style={{paddingTop: '15vh'}}>
+                    <Row>
+                        <Col>
+                            <Spinner animation="border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </Spinner>
+                        </Col>
+                    </Row>
+                </Container>
+            );
+        }
     }
 }
 
