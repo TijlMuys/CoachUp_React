@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Jumbotron, Row, Navbar, Form, FormControl, Button} from "react-bootstrap";
+import {Col, Container, Jumbotron, Row, Navbar, Form, Button} from "react-bootstrap";
 import Spinner from "react-bootstrap/es/Spinner";
 import CoachEntry from "../PageComponent/CoachEntry";
 
@@ -7,7 +7,7 @@ class Coaches extends Component {
 
     state = {
         allLessons: null,
-        sport: null,
+        sport: "All Sports",
         allSports: null
     };
 
@@ -23,6 +23,12 @@ class Coaches extends Component {
             this.loadAllSports();
         }
 
+    }
+
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
     }
 
 
@@ -95,35 +101,44 @@ class Coaches extends Component {
             });
     }
 
-    loadSportFilterLessonData = () => {
-        fetch("http://localhost:8080/Lessons", {
-            method: "GET",
-            headers: {
-                'accept': 'application/json',
-                'content-type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'authToken': window.localStorage.getItem("authToken")
-            }
-        })
-            .then(resp => {
-                if (resp.ok)
-                {
-                    return resp.json();
-                }
-                if (resp.status === 404 || resp.status === 401 || resp.status === 403 || resp.status === 400) {
-                    console.log("error: ", resp.status, resp);
+    handleSubmit(event) {
+        console.log("FILTER START: "+this.state.sport);
+        event.preventDefault();
+        if(this.state.sport !== "All Sports") {
+            fetch("http://localhost:8080/Lessons/search/" + this.state.sport, {
+                method: "GET",
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'authToken': window.localStorage.getItem("authToken")
                 }
             })
-            .then( json => {
-                if(json !== undefined) {
-                    this.setState({allLessons: json});
-                    console.log(this.state);
-                    this.forceUpdate();
-                }
-            })
-            .catch( error => {
-                console.log("Error: ", error);
-            });
+                .then(resp => {
+                    if (resp.ok) {
+                        return resp.json();
+                    }
+                    if (resp.status === 404 || resp.status === 401 || resp.status === 403 || resp.status === 400) {
+                        console.log("error: ", resp.status, resp);
+                    }
+                })
+                .then(json => {
+                    if (json !== undefined) {
+                        console.log("ANSWER: ");
+                        console.log(json);
+                        this.setState({allLessons: json});
+                        console.log(this.state);
+                        this.forceUpdate();
+                    }
+                })
+                .catch(error => {
+                    console.log("Error: ", error);
+                });
+        }
+        else
+        {
+            this.loadAllLessonData();
+        }
     }
 
     render() {
@@ -135,9 +150,10 @@ class Coaches extends Component {
                         <Col>
                             <Jumbotron style={{paddingTop: '1rem'}}>
                                 <Navbar style={{backgroundColor: 'inherit', borderStyle:'none', width: 'inherit', padding: '0', margin:'0 auto'}} className="float-right" >
-                                    <Form inline style={{width:'inherit'}}>
-                                        <Form.Control as="select" name='sport' required value={this.state.sport}
+                                    <Form inline style={{width:'inherit'}} onSubmit={e => this.handleSubmit(e)}>
+                                        <Form.Control as="select" name='sport' required defaultValue={this.state.sport}
                                                       onChange={e => this.handleChange(e)} style={{maxWidth: '70%'}}>
+                                            <option value="All Sports" key="sport">All Sports</option>
                                             {this.state.allSports.map((currentSport, index) => {
                                                 return (<option key={index} value={currentSport['sportName']}
                                                                 name='sport' >{currentSport['sportName']}</option>);
@@ -153,8 +169,9 @@ class Coaches extends Component {
                                     {this.state.allLessons.map((lesson, index) => {
                                         console.log(lesson);
                                         console.log(this.state);
+                                        let key = lesson['id'];
                                         return (
-                                            <div key={index} style={{margin: '0', padding: '0'}}>
+                                            <div key={key} style={{margin: '0', padding: '0'}}>
                                             <CoachEntry style={{padding: '0rem 0rem'}} myLesson={lesson} />
                                             <hr />
                                             </div>

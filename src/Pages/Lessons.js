@@ -5,7 +5,6 @@ import LessonEntry from "../PageComponent/LessonEntry";
 
 class Lessons extends Component {
 
-
     state = {
         alertShow: false,
         alertText: "",
@@ -184,6 +183,9 @@ class Lessons extends Component {
             });
     }
 
+    handleAlertHide = () => this.setState({ alertShow: false });
+    handleAlertShow = () => this.setState({ alertShow: true });
+
 
     render() {
         let accountType = 'not found';
@@ -205,7 +207,8 @@ class Lessons extends Component {
                                     {this.state.myCoach['lessons'].map((lesson, index) => {
                                         console.log(lesson);
                                         console.log(this.state);
-                                        return (<LessonEntry lesson={lesson} key={index} allSports={this.state.allSports} style={{padding: '0rem 0rem'}} />);
+                                        let key = lesson['id'];
+                                        return (<LessonEntry lesson={lesson} key={key} allSports={this.state.allSports} style={{padding: '0rem 0rem'}} />);
                                     })}
                                     </Row>
                                     <hr />

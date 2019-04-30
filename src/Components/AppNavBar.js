@@ -49,8 +49,8 @@ class AppNavBar extends Component {
                             <Link to={'/schedule'} className="nav-link">Schedule</Link>
                             {console.log(this.props)}
                             {(this.props.accountType === 'coach')?  <Link to={'/lessons'} className="nav-link">Lessons</Link> : null}
-                            <Link to={'/coaches'} className="nav-link">Find Coaching</Link>
-                            <Link to={'/buddies'} className="nav-link">Find Buddies</Link>
+                            <Link to={'/coaching'} className="nav-link">Coaching</Link>
+                            {(this.props.accountType === 'regular')?  <Link to={'/buddies'} className="nav-link">Buddies</Link> : null}
                             {(this.props.accountType === 'regular')?  <Link to={'/buddyrequest'} className="nav-link">Request Buddy</Link> : null}
                             {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -75,7 +75,7 @@ class AppNavBar extends Component {
                     <Route path='/schedule' component={Schedule} />
                     <Route path='/lessons' component={Lessons} />
                     <Route path='/buddyrequest' component={BuddyRequest} />
-                    <Route path='/coaches' component={Coaches} />
+                    <Route path='/coaching' component={Coaches} />
                     <Route path='/buddies' component={Buddies} />
                 </Switch>
             </Router>

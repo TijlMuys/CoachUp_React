@@ -97,9 +97,9 @@ class CoachEntry extends Component {
                                     {this.state.myLesson['lessonDescription']}
                                 </Card.Text>
                                 <Card.Text>
-                                    <small className="text-dark"><b>Email: </b></small ><small className="text-dark">{this.state.currentCoach['account']['email']}</small><br/>
-                                    <small className="text-dark"><b>Phone: </b></small ><small className="text-dark">{(this.state.currentCoach['account']['phone'])? this.state.currentCoach['account']['phone'] : 'no phone'}</small><br/>
-                                    <small className="text-dark"><b>Location: </b></small ><small className="text-dark">{this.state.currentCoach['account']['street']} {this.state.currentCoach['account']['number']}, {this.state.currentCoach['account']['zipCode']} {this.state.currentCoach['account']['city']}</small><br/>
+                                    <small className="text-dark"><b>&#x2709;&nbsp;</b></small><small className="text-dark">{this.state.currentCoach['account']['email']}</small><br/>
+                                    <small className="text-dark"><b>&#x260e;&nbsp;</b></small><small className="text-dark">{(this.state.currentCoach['account']['phone'])? this.state.currentCoach['account']['phone'] : 'no phone'}</small><br/>
+                                    <small className="text-dark"><b>&#x27a4;&nbsp;</b></small><small className="text-dark">{this.state.currentCoach['account']['street']} {this.state.currentCoach['account']['number']}, {this.state.currentCoach['account']['zipCode']} {this.state.currentCoach['account']['city']}</small><br/>
                                 </Card.Text>
                             </div>
                         </Card>

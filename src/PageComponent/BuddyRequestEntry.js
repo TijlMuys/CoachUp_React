@@ -14,21 +14,23 @@ class LessonEntry extends Component {
         alertShow: false,
         alertText: "",
         allSports: this.props.allSports,
-        lessonCoach: null,
+        buddyRequestSporter: null,
         validated: false,
-        sport: this.props.lesson['sport']['sportName'],
-        lessonName: this.props.lesson['lessonName'],
-        difficulty: this.props.lesson['difficulty'],
-        lessonDescription: this.props.lesson['lessonDescription'],
-        street: this.props.lesson['lessonLocation']['street'],
-        number: this.props.lesson['lessonLocation']['number'],
-        zipCode: this.props.lesson['lessonLocation']['zipCode'],
-        city: this.props.lesson['lessonLocation']['city']
+        sport: this.props.buddyRequest['sport']['sportName'],
+        buddyEntryTitle: this.props.buddyRequest['buddyEntryTitle'],
+        difficulty: this.props.buddyRequest['difficulty'],
+        buddyEntryDescription: this.props.buddyRequest['buddyEntryDescription'],
+        meetingDateTime: JSON.stringify(new Date(this.props.buddyRequest['meetingDateTime'])).slice(1, 17),
+        meetingDateTimeString: "",
+        street: this.props.buddyRequest['buddyLocation']['street'],
+        number: this.props.buddyRequest['buddyLocation']['number'],
+        zipCode: this.props.buddyRequest['buddyLocation']['zipCode'],
+        city: this.props.buddyRequest['buddyLocation']['city']
     };
 
 
-    loadCoachData = () => {
-        fetch("http://localhost:8080/Coaches/"+this.props.lesson['coach_key'], {
+    loadSporterData = () => {
+        fetch("http://localhost:8080/Sporters/"+this.props.buddyRequest['req_sporter_key'], {
             method: "GET",
             headers: {
                 'accept': 'application/json',
@@ -50,7 +52,7 @@ class LessonEntry extends Component {
                 if(json !== undefined) {
                     console.log(json);
                     let newState = {...this.state};
-                    newState['lessonCoach'] = json;
+                    newState['buddyRequestSporter'] = json;
                     this.setState(newState);
                     console.log(this.state);
                     this.forceUpdate();
@@ -62,7 +64,7 @@ class LessonEntry extends Component {
     }
 
     handleDelete = () => {
-        fetch("http://localhost:8080/Lessons/"+this.props.lesson['id'], {
+        fetch("http://localhost:8080/BuddyEntries/"+this.props.buddyRequest['id'], {
             method: "DELETE",
             headers: {
                 'accept': 'application/json',
@@ -74,7 +76,7 @@ class LessonEntry extends Component {
             .then(resp => {
                 if (resp.ok)
                 {
-                    console.log("DELETED LESSON");
+                    console.log("DELETED BUDDY REQUEST");
                     this.forceUpdate();
                     window.location.reload();
                 }
@@ -94,8 +96,16 @@ class LessonEntry extends Component {
         })
     }
 
+    handleDateChange = (e) => {
+        console.log("DATECHANGE");
+        console.log(e.target.value);
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
     componentWillMount() {
-        this.loadCoachData();
+        this.loadSporterData();
     }
 
     handleAlertHide = () => this.setState({ alertShow: false });
@@ -114,8 +124,8 @@ class LessonEntry extends Component {
         else
         {
             event.preventDefault();
-            //Update lessonLocation
-            fetch("http://localhost:8080/Lessons/update", {
+            //Update buddyLocation
+            fetch("http://localhost:8080/BuddyEntries/update", {
                 method: "POST",
                 headers: {
                     'accept': 'application/json',
@@ -123,12 +133,13 @@ class LessonEntry extends Component {
                     'authToken': window.localStorage.getItem("authToken")
                 },
                 body: JSON.stringify({
-                    "id": this.props.lesson['id'],
-                    "lessonName": this.state.lessonName,
-                    "lessonDescription": this.state.lessonDescription,
+                    "id": this.props.buddyRequest['id'],
+                    "buddyEntryTitle": this.state.buddyEntryTitle,
+                    "buddyEntryDescription": this.state.buddyEntryDescription,
                     "difficulty": this.state.difficulty,
+                    "meetingDateTime": this.state.meetingDateTime,
                     "sport": this.state.sport,
-                    "locationId": this.props.lesson['lessonLocation']['id'],
+                    "locationId": this.props.buddyRequest['buddyLocation']['id'],
                     "street":this.state.street,
                     "number":this.state.number,
                     "zipCode":this.state.zipCode,
@@ -142,7 +153,7 @@ class LessonEntry extends Component {
                     }
                     else if (resp.status === 404 || resp.status === 401 || resp.status === 400) {
                         let newState = {...this.state};
-                        newState['alertText'] = "Couldn't update the lesson location, the location was not found in database";
+                        newState['alertText'] = "Couldn't update the buddyRequest location, the location was not found in database";
                         this.setState(newState);
                         this.handleAlertShow();
                         console.log("error: ", resp.status, resp);
@@ -173,33 +184,42 @@ class LessonEntry extends Component {
 
     render() {
         const { validated } = this.state;
-            if(this.state.lessonCoach !== null) {
+            if(this.state.buddyRequestSporter !== null) {
+                let currentDate = new Date(this.props.buddyRequest['meetingDateTime']);
+                let formatOptions = {
+                    hourcycle: 'h23', month: 'long',  day: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric'
+                };
+                let currentDateTimeString = new Intl.DateTimeFormat('en-BE', formatOptions).format(currentDate);
+                console.log("RECIEVED DATE");
+                console.log(this.state.meetingDateTime);
+                console.log(currentDateTimeString);
                 return (
-                    <div id={this.props.lesson['id']} className="col-md-6 col-lg-4 col-xl-3" style={{marginBottom:"0.5rem"}}>
+                    <div id={this.props.buddyRequest['id']} className="col-md-6 col-lg-4 col-xl-3" style={{marginBottom:"0.5rem"}}>
                         <Card className="card h-100" style={{margin: '0.5rem 0.5rem', 'maxWidth': '40vh'}} hidden={this.state.showEdit}>
                             <Card.Header style={{backgroundColor: "#fff", paddingTop: "1rem"}}>
-                                <Card.Subtitle>{this.props.lesson['sport']['sportName']}</Card.Subtitle>
+                                <Card.Subtitle>{this.props.buddyRequest['sport']['sportName']}</Card.Subtitle>
                             </Card.Header>
-                            <Card.Img className="card-img-top img-fluid" variant="top" src={this.props.lesson['sport']['imageUrl']} style={{
+                            <Card.Img className="card-img-top img-fluid" variant="top" src={this.props.buddyRequest['sport']['imageUrl']} style={{
                                 opacity: '0.8',
                                 'maxWidth': '40vh',
                                 'padding': '1rem 1rem 0rem 1rem',
                                 'borderRadius': '7%'
                             }}/>
                             <Card.Body style={{padding: '0.3rem 1rem 0.3rem 1rem'}}>
-                                <Card.Title>{this.props.lesson['lessonName']}</Card.Title>
-                                <Card.Subtitle style={{paddingBottom: '0.3rem', 'maxWidth': '40vh'}}>{this.state.lessonCoach['account']['userName']}
+                                <Card.Title>{this.props.buddyRequest['buddyEntryTitle']}</Card.Title>
+                                <Card.Subtitle style={{paddingBottom: '0.3rem', 'maxWidth': '40vh'}}>{this.state.buddyRequestSporter['account']['userName']}
                                     <div style={{display: 'inline-block', float: 'right', paddingRight: "0.2rem", 'maxWidth': '40vh'}}>
-                                        <small style={{color: '#029ACF'}}>Difficulty: {this.props.lesson['difficulty']}/5
+                                        <small style={{color: '#029ACF'}}>Difficulty: {this.props.buddyRequest['difficulty']}/5
                                         </small>
                                     </div>
                                 </Card.Subtitle>
                                 <Card.Text style={{'maxWidth': '40vh'}}>
-                                    {this.props.lesson['lessonDescription']}
+                                    {this.props.buddyRequest['buddyEntryDescription']}
                                 </Card.Text>
                                 <Card.Text>
-                                    <small
-                                        className="text-muted">&#x27a4;&nbsp;{this.props.lesson['lessonLocation']['street']}&nbsp;{this.props.lesson['lessonLocation']['number']},&nbsp;{this.props.lesson['lessonLocation']['zipCode']}&nbsp;{this.props.lesson['lessonLocation']['city']}</small>
+                                    <small className="text-info">&#9719;&nbsp;{currentDateTimeString}</small>
+                                    <br/>
+                                    <small className="text-muted">&#x27a4;&nbsp;{this.props.buddyRequest['buddyLocation']['street']}&nbsp;{this.props.buddyRequest['buddyLocation']['number']},&nbsp;{this.props.buddyRequest['buddyLocation']['zipCode']}&nbsp;{this.props.buddyRequest['buddyLocation']['city']}</small>
                                 </Card.Text>
                             </Card.Body>
                             <Card.Footer>
@@ -227,7 +247,7 @@ class LessonEntry extends Component {
                                         </Form.Control>
                                     </Card.Subtitle>
                                 </Card.Header>
-                                <Card.Img variant="top" src={this.props.lesson['sport']['imageUrl']} style={{
+                                <Card.Img variant="top" src={this.props.buddyRequest['sport']['imageUrl']} style={{
                                     opacity: '0.8',
                                     'maxWidth': '40vh',
                                     'padding': '1rem 1rem 0rem 1rem',
@@ -237,13 +257,13 @@ class LessonEntry extends Component {
                                     <Card.Title>
                                         <span className="h6 text-dark"><b>Lesson Name</b></span>
                                         <Form.Control
-                                            name='lessonName'
+                                            name='buddyEntryTitle'
                                             required
                                             type="text"
-                                            value={this.state.lessonName}
+                                            value={this.state.buddyEntryTitle}
                                             onChange={e => this.handleChange(e)}
                                         />
-                                        <Form.Control.Feedback type="invalid">A lesson name is required.</Form.Control.Feedback>
+                                        <Form.Control.Feedback type="invalid">A buddyRequest name is required.</Form.Control.Feedback>
                                     </Card.Title>
                                     <Card.Subtitle>
                                         <span className="h6 text-dark"><b>Difficulty</b></span>
@@ -262,13 +282,24 @@ class LessonEntry extends Component {
                                     <div>
                                         <span className="h6 text-dark"><b>Lesson Description</b></span>
                                         <Form.Control as="textarea" rows="6"
-                                            name='lessonDescription'
+                                            name='buddyEntryDescription'
                                             required
-                                            value={this.state.lessonDescription}
+                                            value={this.state.buddyEntryDescription}
                                             onChange={e => this.handleChange(e)}
                                         />
                                         <Form.Control.Feedback type="invalid">A description is required.</Form.Control.Feedback>
                                     </div>
+                                    <Form.Group controlId="meetingDateTime">
+                                        <span className="h6 text-dark"><b>Meeting Time</b></span>
+                                        <Form.Control
+                                            name='meetingDateTime'
+                                            type="datetime-local"
+                                            required
+                                            value={this.state.meetingDateTime}
+                                            onChange={e => this.handleDateChange(e)}
+                                            onBlur={e => this.handleDateChange(e)}/>
+                                        <Form.Control.Feedback type="invalid">You need to provide a time to meet.</Form.Control.Feedback>
+                                    </Form.Group>
                                         <Form.Row>
                                             <Form.Group as={Col} className={'col'} controlId="street">
                                                 <span className="h6 text-dark"><b>Street</b></span>
