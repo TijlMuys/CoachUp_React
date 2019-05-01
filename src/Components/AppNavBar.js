@@ -46,7 +46,7 @@ class AppNavBar extends Component {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
                             <Link to={'/profile'} className="nav-link">Profile</Link>
-                            <Link to={'/schedule'} className="nav-link">Schedule</Link>
+                            {/*<Link to={'/schedule'} className="nav-link">Schedule</Link>*/}
                             <Link to={'/coaching'} className="nav-link">Coaching</Link>
                             <Link to={'/buddies'} className="nav-link">Find Buddies</Link>
                             {(this.props.accountType === 'regular')?  <Link to={'/buddyrequest'} className="nav-link">Request Buddy</Link> : null}
