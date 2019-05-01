@@ -47,12 +47,12 @@ class AppRegisterForm extends Component {
         this.setState({
             [e.target.name]: e.target.value
         })
-    }
+    };
 
     ValidatePassword = (e) => {
         this.setState({
             [e.target.name]: e.target.value
-        })
+        });
         let RegisterRepeatPassword = document.getElementById("RegisterRepeatPassword").value;
         let RegisterPassword = document.getElementById("RegisterPassword").value;
         if(RegisterPassword !== RegisterRepeatPassword) {
@@ -62,13 +62,13 @@ class AppRegisterForm extends Component {
         else {
             document.getElementById("RegisterRepeatPassword").setCustomValidity('');
         }
-    }
+    };
 
     handleCheckboxChange = (e) => {
         this.setState({
             [e.target.name]: e.target.checked
         })
-    }
+    };
 
     handleSubmit(event) {
         const form = event.currentTarget;
@@ -83,7 +83,7 @@ class AppRegisterForm extends Component {
             let salt = "$2a$10$f7sHcIdjKvMTGkc.8dJUFe9n.Qoaa9fvO2WzLqpZEsCalLkGGYtri";
             let hash = bcrypt.hashSync(this.state.RegisterPassword, salt);
             //register code
-            fetch("http://localhost:8080/Accounts", {
+            fetch("http://localhost:8080/Accounts/create", {
                 method: "POST",
                 headers: {
                     'accept': 'application/json',

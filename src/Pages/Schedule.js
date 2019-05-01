@@ -4,7 +4,7 @@ import {Button, Col, Container, Jumbotron, Row} from "react-bootstrap";
 class Schedule extends Component {
     render() {
         return (
-            <Container style={{paddingTop: '15vh'}}>
+            <Container style={{paddingTop: '17vmin'}}>
                 <Row>
                     <Col>
                         <Jumbotron>

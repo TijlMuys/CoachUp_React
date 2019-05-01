@@ -24,10 +24,9 @@ class BuddyRequest extends Component {
         this.setState({
             [e.target.name]: e.target.value
         })
-    }
+    };
 
     handleSubmit(event) {
-        console.log("HandleNewLessonSubmit");
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -35,7 +34,6 @@ class BuddyRequest extends Component {
         }
         else
         {
-            console.log(this.state);
             event.preventDefault();
             fetch("http://localhost:8080/BuddyEntries/create", {
                 method: "POST",
@@ -72,9 +70,6 @@ class BuddyRequest extends Component {
                 })
                 .then( json => {
                     if(json !== undefined) {
-                        //this.forceUpdate();
-                        console.log(json);
-                        console.log("LOCATIONNEWSUCCESS!");
                         this.forceUpdate();
                         window.location.reload();
                     }
@@ -95,7 +90,6 @@ class BuddyRequest extends Component {
     handleAlertShow = () => this.setState({ alertShow: true });
 
     componentWillMount() {
-        console.log('componentDidMount');
         let accountId = 'not found';
         if(localStorage.getItem('myAccount')){
             accountId = JSON.parse(localStorage.getItem('myAccount'))['id'];
@@ -144,14 +138,14 @@ class BuddyRequest extends Component {
                     //set first sport for form
                     this.setState({
                         sport: this.state.allSports[0]['sportName']
-                    })
+                    });
                     this.forceUpdate();
                 }
             })
             .catch( error => {
                 console.log("Error: ", error);
             });
-    }
+    };
 
 
     loadCoachProfileData = (accountId) => {
@@ -183,7 +177,7 @@ class BuddyRequest extends Component {
             .catch( error => {
                 console.log("Error: ", error);
             });
-    }
+    };
 
 
     render() {
@@ -203,7 +197,7 @@ class BuddyRequest extends Component {
                                 <p>Looking for a partner to casually play sports with? Create a Buddy Request to let other users know you want to play together!<br/>Edit and add your created buddy requests below.</p>
                                 <Container className="container-fluid content-row" style={{padding: '0rem 0rem'}}>
                                     <Row className="row-eq-height" style={{margin: '0 auto', padding: '0rem 0rem'}}>
-                                        {this.state.mySporter['buddyrequests'].map((buddyRequest, index) => {
+                                        {this.state.mySporter['buddyrequests'].map((buddyRequest) => {
                                             console.log(buddyRequest);
                                             console.log(this.state);
                                             let key = buddyRequest['id'];
@@ -349,7 +343,7 @@ class BuddyRequest extends Component {
                             <Alert variant="danger" show={true}>
                                 <Alert.Heading>You are not Authorized to view this page</Alert.Heading>
                                 <p>
-                                    Please log in as a coach in order to view this page.
+                                    Please log in as a regular user in order to view this page.
                                 </p>
                             </Alert>
                         </Col>

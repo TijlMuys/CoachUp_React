@@ -21,7 +21,6 @@ class AppLoginForm extends Component {
         let hash = (password !== null && email !== null)? bcrypt.hashSync(password, salt): bcrypt.hashSync(this.state.password, salt);
         let mailAddress = (password !== null && email !== null)? email: this.state.email;
 
-        console.log(hash);
         //Login code
         fetch("http://localhost:8080/login", {
             method: "POST",
@@ -40,7 +39,6 @@ class AppLoginForm extends Component {
                     newState['alertText'] = "The email or password was incorrect";
                     this.setState(newState);
                     this.handleAlertShow();
-                    console.log("error: ", resp.status, resp);
                 }
             })
             .then( json => {
@@ -70,7 +68,7 @@ class AppLoginForm extends Component {
                 newState['alertText'] = "Something went wrong when trying to contact the server";
                 this.setState(newState);
                 this.handleAlertShow();
-                console.log("Error: ", error);
+                console.log(error);
             });
 
 
@@ -84,7 +82,7 @@ class AppLoginForm extends Component {
         let loginObject = {...this.state};
         loginObject[event.target.name] = event.target.value;
         this.setState(loginObject);
-    }
+    };
 
     toggleFormType = () =>
     {
@@ -95,7 +93,7 @@ class AppLoginForm extends Component {
             this.setState({showRegister: true});
         }
 
-    }
+    };
 
     renderForm = () =>
     {
@@ -136,7 +134,7 @@ class AppLoginForm extends Component {
                 < AppRegisterForm toggleFormType = {this.toggleFormType} login={this.login} loginHandler={this.props.loginHandler}/>
             );
         }
-    }
+    };
 
     render()
     {

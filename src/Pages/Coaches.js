@@ -29,7 +29,7 @@ class Coaches extends Component {
         this.setState({
             [e.target.name]: e.target.value
         })
-    }
+    };
 
 
     loadAllLessonData = () => {
@@ -54,14 +54,13 @@ class Coaches extends Component {
             .then( json => {
                 if(json !== undefined) {
                     this.setState({allLessons: json});
-                    console.log(this.state);
                     this.forceUpdate();
                 }
             })
             .catch( error => {
                 console.log("Error: ", error);
             });
-    }
+    };
 
     loadAllSports = () => {
         fetch("http://localhost:8080/Sports", {
@@ -84,25 +83,22 @@ class Coaches extends Component {
             })
             .then( json => {
                 if(json !== undefined) {
-                    console.log(json);
                     let newState = {...this.state};
                     newState['allSports'] = json;
                     this.setState(newState);
-                    console.log(this.state);
                     //set first sport for form
                     this.setState({
                         sport: this.state.allSports[0]['sportName']
-                    })
+                    });
                     this.forceUpdate();
                 }
             })
             .catch( error => {
                 console.log("Error: ", error);
             });
-    }
+    };
 
     handleSubmit(event) {
-        console.log("FILTER START: "+this.state.sport);
         event.preventDefault();
         if(this.state.sport !== "All Sports") {
             fetch("http://localhost:8080/Lessons/search/" + this.state.sport, {
@@ -124,10 +120,7 @@ class Coaches extends Component {
                 })
                 .then(json => {
                     if (json !== undefined) {
-                        console.log("ANSWER: ");
-                        console.log(json);
                         this.setState({allLessons: json});
-                        console.log(this.state);
                         this.forceUpdate();
                     }
                 })
@@ -145,7 +138,7 @@ class Coaches extends Component {
         if(this.state.allLessons !== null && this.state.allSports !== null)
         {
             return (
-                <Container style={{paddingTop: '15vh'}}>
+                <Container style={{paddingTop: '17vmin'}}>
                     <Row>
                         <Col>
                             <Jumbotron style={{paddingTop: '1rem'}}>
@@ -166,13 +159,11 @@ class Coaches extends Component {
                                 <h1>Find Coaching</h1>
                                 <hr/>
                                 <ul className="list-unstyled">
-                                    {this.state.allLessons.map((lesson, index) => {
-                                        console.log(lesson);
-                                        console.log(this.state);
+                                    {this.state.allLessons.map((lesson) => {
                                         let key = lesson['id'];
                                         return (
                                             <div key={key} style={{margin: '0', padding: '0'}}>
-                                            <CoachEntry style={{padding: '0rem 0rem'}} myLesson={lesson} />
+                                            <CoachEntry style={{padding: '0rem 0rem'}} myBuddyRequest={lesson} />
                                             <hr />
                                             </div>
                                         );

@@ -31,10 +31,10 @@ class AppNavBar extends Component {
             });
         window.localStorage.removeItem("authToken");
         window.localStorage.removeItem("myAccount");
-        window.location.href = "/"
+        window.location.href = "/";
         this.props.logoutHandler();
 
-    }
+    };
 
     render() {
 
@@ -47,11 +47,10 @@ class AppNavBar extends Component {
                         <Nav className="mr-auto">
                             <Link to={'/profile'} className="nav-link">Profile</Link>
                             <Link to={'/schedule'} className="nav-link">Schedule</Link>
-                            {console.log(this.props)}
-                            {(this.props.accountType === 'coach')?  <Link to={'/lessons'} className="nav-link">Lessons</Link> : null}
                             <Link to={'/coaching'} className="nav-link">Coaching</Link>
-                            {(this.props.accountType === 'regular')?  <Link to={'/buddies'} className="nav-link">Buddies</Link> : null}
+                            <Link to={'/buddies'} className="nav-link">Find Buddies</Link>
                             {(this.props.accountType === 'regular')?  <Link to={'/buddyrequest'} className="nav-link">Request Buddy</Link> : null}
+                            {(this.props.accountType === 'coach')?  <Link to={'/lessons'} className="nav-link">Lessons</Link> : null}
                             {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>

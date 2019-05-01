@@ -4,11 +4,6 @@ import Spinner from "react-bootstrap/es/Spinner";
 
 class LessonEntry extends Component {
 
-    constructor(...args) {
-        super(...args);
-        console.log(this.props);
-    }
-
     state = {
         showEdit: false,
         alertShow: false,
@@ -50,18 +45,16 @@ class LessonEntry extends Component {
             })
             .then( json => {
                 if(json !== undefined) {
-                    console.log(json);
                     let newState = {...this.state};
                     newState['buddyRequestSporter'] = json;
                     this.setState(newState);
-                    console.log(this.state);
                     this.forceUpdate();
                 }
             })
             .catch( error => {
                 console.log("Error: ", error);
             });
-    }
+    };
 
     handleDelete = () => {
         fetch("http://localhost:8080/BuddyEntries/"+this.props.buddyRequest['id'], {
@@ -76,7 +69,6 @@ class LessonEntry extends Component {
             .then(resp => {
                 if (resp.ok)
                 {
-                    console.log("DELETED BUDDY REQUEST");
                     this.forceUpdate();
                     window.location.reload();
                 }
@@ -87,22 +79,20 @@ class LessonEntry extends Component {
             .catch( error => {
                 console.log("Error: ", error);
             });
-    }
+    };
 
 
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
-    }
+    };
 
     handleDateChange = (e) => {
-        console.log("DATECHANGE");
-        console.log(e.target.value);
         this.setState({
             [e.target.name]: e.target.value
         })
-    }
+    };
 
     componentWillMount() {
         this.loadSporterData();
@@ -161,9 +151,6 @@ class LessonEntry extends Component {
                 })
                 .then( json => {
                     if(json !== undefined) {
-                        //this.forceUpdate();
-                        console.log(json);
-                        console.log("LOCATIONUPDTESUCCESS!");
                         this.forceUpdate();
                         window.location.reload();
                     }
@@ -190,9 +177,6 @@ class LessonEntry extends Component {
                     hourcycle: 'h23', month: 'long',  day: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric'
                 };
                 let currentDateTimeString = new Intl.DateTimeFormat('en-BE', formatOptions).format(currentDate);
-                console.log("RECIEVED DATE");
-                console.log(this.state.meetingDateTime);
-                console.log(currentDateTimeString);
                 return (
                     <div id={this.props.buddyRequest['id']} className="col-md-6 col-lg-4 col-xl-3" style={{marginBottom:"0.5rem"}}>
                         <Card className="card h-100" style={{margin: '0.5rem 0.5rem', 'maxWidth': '40vh'}} hidden={this.state.showEdit}>

@@ -4,10 +4,6 @@ import Spinner from "react-bootstrap/es/Spinner";
 
 class LessonEntry extends Component {
 
-    constructor(...args) {
-        super(...args);
-        console.log(this.props);
-    }
 
     state = {
         showEdit: false,
@@ -48,18 +44,16 @@ class LessonEntry extends Component {
             })
             .then( json => {
                 if(json !== undefined) {
-                    console.log(json);
                     let newState = {...this.state};
                     newState['lessonCoach'] = json;
                     this.setState(newState);
-                    console.log(this.state);
                     this.forceUpdate();
                 }
             })
             .catch( error => {
                 console.log("Error: ", error);
             });
-    }
+    };
 
     handleDelete = () => {
         fetch("http://localhost:8080/Lessons/"+this.props.lesson['id'], {
@@ -74,7 +68,6 @@ class LessonEntry extends Component {
             .then(resp => {
                 if (resp.ok)
                 {
-                    console.log("DELETED LESSON");
                     this.forceUpdate();
                     window.location.reload();
                 }
@@ -85,14 +78,14 @@ class LessonEntry extends Component {
             .catch( error => {
                 console.log("Error: ", error);
             });
-    }
+    };
 
 
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
-    }
+    };
 
     componentWillMount() {
         this.loadCoachData();
@@ -105,7 +98,6 @@ class LessonEntry extends Component {
     handleEditHide= () => this.setState({ showEdit:  false});
 
     handleSubmit(event) {
-        console.log("HandleLessonSubmit");
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -150,9 +142,6 @@ class LessonEntry extends Component {
                 })
                 .then( json => {
                     if(json !== undefined) {
-                        //this.forceUpdate();
-                        console.log(json);
-                        console.log("LOCATIONUPDTESUCCESS!");
                         this.forceUpdate();
                         window.location.reload();
                     }

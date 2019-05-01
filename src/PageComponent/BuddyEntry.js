@@ -33,7 +33,7 @@ class CoachEntry extends Component {
 
 
     loadCurrentCoach = () => {
-        fetch("http://localhost:8080/Coaches/"+ this.state.myBuddyRequest['coach_key'], {
+        fetch("http://localhost:8080/Sporters/"+ this.state.myBuddyRequest['req_sporter_key'], {
             method: "GET",
             headers: {
                 'accept': 'application/json',
@@ -66,6 +66,11 @@ class CoachEntry extends Component {
 
         if(this.state.currentSporter !== null)
         {
+            let currentDate = new Date(this.props.myBuddyRequest['meetingDateTime']);
+            let formatOptions = {
+                hourcycle: 'h23', month: 'long',  day: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric'
+            };
+            let currentDateTimeString = new Intl.DateTimeFormat('en-BE', formatOptions).format(currentDate);
             return (
                 <Media as="li" onClick={() => this.toggleDetails(this.state.showDetails)}>
                     <img
@@ -77,7 +82,7 @@ class CoachEntry extends Component {
                     />
                     <Media.Body>
                         <Card style={{padding: '0rem 0.5rem 0.5rem 0.5rem', backgroundColor: 'inherit'}}>
-                            <Card.Title style={{margin: '0rem 0rem 0.8rem 0rem'}}>{this.state.myBuddyRequest['lessonName']}</Card.Title>
+                            <Card.Title style={{margin: '0rem 0rem 0.8rem 0rem'}}>{this.state.myBuddyRequest['buddyEntryTitle']}</Card.Title>
                             <Card.Subtitle style={{paddingBottom: '0rem'}}>
                                 <div style={{display: 'inline-block', float: 'right', paddingRight: "0.2rem"}}>
                                     <small className="text-info">Difficulty: {this.state.myBuddyRequest['difficulty']}/5
@@ -93,9 +98,10 @@ class CoachEntry extends Component {
                             </Card.Subtitle>
                             <div hidden={!this.state.showDetails}>
                                 <Card.Text style={{marginBottom: '0.5rem'}}>
-                                    {this.state.myBuddyRequest['lessonDescription']}
+                                    {this.state.myBuddyRequest['buddyEntryDescription']}
                                 </Card.Text>
                                 <Card.Text>
+                                    <small className="text-info"><b>&#9719;&nbsp;</b></small><small className="text-info">{currentDateTimeString}</small><br/>
                                     <small className="text-dark"><b>&#x2709;&nbsp;</b></small><small className="text-dark">{this.state.currentSporter['account']['email']}</small><br/>
                                     <small className="text-dark"><b>&#x260e;&nbsp;</b></small><small className="text-dark">{(this.state.currentSporter['account']['phone'])? this.state.currentSporter['account']['phone'] : 'no phone'}</small><br/>
                                     <small className="text-dark"><b>&#x27a4;&nbsp;</b></small><small className="text-dark">{this.state.currentSporter['account']['street']} {this.state.currentSporter['account']['number']}, {this.state.currentSporter['account']['zipCode']} {this.state.currentSporter['account']['city']}</small><br/>

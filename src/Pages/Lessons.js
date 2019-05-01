@@ -25,7 +25,7 @@ class Lessons extends Component {
         this.setState({
             [e.target.name]: e.target.value
         })
-    }
+    };
 
     handleSubmit(event) {
         console.log("HandleNewLessonSubmit");
@@ -142,14 +142,14 @@ class Lessons extends Component {
                     //set first sport for form
                     this.setState({
                         sport: this.state.allSports[0]['sportName']
-                    })
+                    });
                     this.forceUpdate();
                 }
             })
             .catch( error => {
                 console.log("Error: ", error);
             });
-    }
+    };
 
 
     loadCoachProfileData = (accountId) => {
@@ -181,7 +181,7 @@ class Lessons extends Component {
             .catch( error => {
                 console.log("Error: ", error);
             });
-    }
+    };
 
     handleAlertHide = () => this.setState({ alertShow: false });
     handleAlertShow = () => this.setState({ alertShow: true });
@@ -196,7 +196,7 @@ class Lessons extends Component {
         {
             const { validated } = this.state;
             return (
-                <Container style={{paddingTop: '15vh'}}>
+                <Container style={{paddingTop: '17vmin'}}>
                     <Row>
                         <Col>
                             <Jumbotron style={{padding: '1rem'}}>
@@ -204,7 +204,7 @@ class Lessons extends Component {
                                 <p>Edit and add your created lessons below.</p>
                                 <Container className="container-fluid content-row" style={{padding: '0rem 0rem'}}>
                                     <Row className="row-eq-height" style={{margin: '0 auto', padding: '0rem 0rem'}}>
-                                    {this.state.myCoach['lessons'].map((lesson, index) => {
+                                    {this.state.myCoach['lessons'].map((lesson) => {
                                         console.log(lesson);
                                         console.log(this.state);
                                         let key = lesson['id'];
